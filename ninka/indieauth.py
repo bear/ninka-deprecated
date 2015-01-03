@@ -89,22 +89,27 @@ def discoverAuthEndpoints(authDomain, content=None, look_in={'name':'header'}, t
                         result[rel].add(url)
     return result
 
-def validateAuthCode(code, redirect_uri, client_id, validationEndpoint='https://indieauth.com/auth'):
+def validateAuthCode(code, redirect_uri, client_id, state=None, validationEndpoint='https://indieauth.com/auth'):
     """Call authorization endpoint to validate given auth code.
        
     :param code: the auth code to validate
     :param redirect_uri: redirect_uri for the given auth code
     :param client_id: client_id for the given auth code
+    :param state: state for the given auth code
     :param tokenEndpoint: URL to make the validation request at
     :rtype: True if auth code is valid
     """
-    r = requests.post(validationEndpoint, verify=True, params={'code':         code,
-                                                               'redirect_uri': redirect_uri,
-                                                               'client_id':    client_id
-                                                               })
-    result = {'status':   r.status_code,
-              'headers':  r.headers
-              }
+    payload = {'code':         code,
+               'redirect_uri': redirect_uri,
+               'client_id':    client_id,
+               }
+    if state is not None:
+        payload['state'] = state
+
+    r = requests.post(validationEndpoint, verify=True, params=payload)
+    result = {'status':  r.status_code,
+              'headers': r.headers
+             }
     if 'charset' in r.headers.get('content-type', ''):
         result['content'] = r.text
     else:

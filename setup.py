@@ -15,7 +15,7 @@ with open('LICENSE') as f:
 
 setup(
     name='ninka',
-    version='0.1.2',
+    version='0.1.3',
     description='IndieAuth Manager',
     long_description=readme,
     install_requires=required,
