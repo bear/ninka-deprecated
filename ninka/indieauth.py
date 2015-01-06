@@ -29,7 +29,7 @@ import ronkyuu
 #   <link rel="token_endpoint" href="https://tokens.oauth.net/token">
 #   <link rel="micropub" href="https://aaronparecki.com/api/post">
 
-def discoverAuthEndpoints(authDomain, content=None, look_in={'name':'header'}, test_urls=True, validateCerts=True):
+def discoverAuthEndpoints(authDomain, content=None, look_in={'name':'link'}, test_urls=True, validateCerts=True):
     """Find the authorization or redirect_uri endpoints for the given authDomain.
     Only scan html element matching all criteria in look_in.
 
@@ -76,7 +76,6 @@ def discoverAuthEndpoints(authDomain, content=None, look_in={'name':'header'}, t
                         result[rel].add(url)
  
         all_links = BeautifulSoup(result['content'], parse_only=SoupStrainer(**look_in)).find_all('link')
-    
         for link in all_links:
             rel = link.get('rel', None)[0]
 
