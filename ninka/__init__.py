@@ -1,6 +1,6 @@
 #/usr/bin/env python
 
-VERSION = (0, 1, 4, '')
+VERSION = (0, 2, 0, '')
 
 __author__    = 'Mike Taylor'
 __contact__   = 'bear@bear.im'
@@ -10,3 +10,4 @@ __version__   = '.'.join(map(str, VERSION[0:3])) + ''.join(VERSION[3:])
 
 
 from indieauth import discoverAuthEndpoints, validateAuthCode
+from micropub import discoverMicropubEndpoints, discoverTokenEndpoints
