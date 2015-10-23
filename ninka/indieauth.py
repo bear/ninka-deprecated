@@ -1,10 +1,9 @@
-#!/usr/bin/env python
-
+# -*- coding: utf-8 -*-
 """
-:copyright: (c) 2014 by Mike Taylor
+:copyright: (c) 2014-2015 by Mike Taylor
 :license: MIT, see LICENSE for more details.
 
-IndieAuth Tools
+IndieAuth Toolkit
 """
 
 import os
@@ -75,7 +74,7 @@ def discoverAuthEndpoints(authDomain, content=None, look_in={'name':'link'}, tes
                     if url.scheme in ('http', 'https') and rel in ('authorization_endpoint', 'redirect_uri'):
                         result[rel].add(url)
  
-        all_links = BeautifulSoup(result['content'], parse_only=SoupStrainer(**look_in)).find_all('link')
+        all_links = BeautifulSoup(result['content'], 'lxml', parse_only=SoupStrainer(**look_in)).find_all('link')
         for link in all_links:
             rel = link.get('rel', None)[0]
 
@@ -93,7 +92,7 @@ def validateAuthCode(code, redirect_uri, client_id, state=None, validationEndpoi
        
     :param code: the auth code to validate
     :param redirect_uri: redirect_uri for the given auth code
-    :param client_id: client_id for the given auth code
+    :param client_id: where to find the auth endpoint for the given auth code
     :param state: state for the given auth code
     :param tokenEndpoint: URL to make the validation request at
     :rtype: True if auth code is valid
@@ -105,9 +104,17 @@ def validateAuthCode(code, redirect_uri, client_id, state=None, validationEndpoi
     if state is not None:
         payload['state'] = state
 
+    authURL = None
+    authEndpoints = ninka.indieauth.discoverAuthEndpoints(client_id)
+    for url in authEndpoints['authorization_endpoint']:
+        authURL = url
+        break
+    if authURL is not None:
+        validationEndpoint = ParseResult(authURL.scheme, authURL.netloc, authURL.path, '', '', '').geturl()
+
     r = requests.post(validationEndpoint, verify=True, params=payload)
-    result = {'status':  r.status_code,
-              'headers': r.headers
+    result = { 'status':  r.status_code,
+               'headers': r.headers
              }
     if 'charset' in r.headers.get('content-type', ''):
         result['content'] = r.text
@@ -117,3 +124,4 @@ def validateAuthCode(code, redirect_uri, client_id, state=None, validationEndpoi
         result['response'] = parse_qs(result['content'])
 
     return result
+
