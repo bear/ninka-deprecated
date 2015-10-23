@@ -1,13 +1,17 @@
-#/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+:copyright: (c) 2014-2015 by Mike Taylor
+:license: MIT, see LICENSE for more details.
+"""
 
-VERSION = (0, 2, 0, '')
-
-__author__    = 'Mike Taylor'
-__contact__   = 'bear@bear.im'
-__copyright__ = 'Copyright (c) 2014 by Mike Taylor'
-__license__   = 'MIT'
-__version__   = '.'.join(map(str, VERSION[0:3])) + ''.join(VERSION[3:])
-
+__author__       = 'bear (Mike Taylor)'
+__email__        = 'bear@bear.im'
+__copyright__    = 'Copyright (c) 2014-2015 by Mike Taylor'
+__license__      = 'MIT'
+__version__      = '0.3.0'
+__url__          = 'https://github.com/bear/ninka'
+__download_url__ = 'https://pypi.python.org/pypi/ninka'
+__description__  = "Indieauth Toolkit"
 
 from indieauth import discoverAuthEndpoints, validateAuthCode
 from micropub import discoverMicropubEndpoints, discoverTokenEndpoints

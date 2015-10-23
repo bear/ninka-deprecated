@@ -1,7 +1,6 @@
-#!/usr/bin/env python
-
+# -*- coding: utf-8 -*-
 """
-:copyright: (c) 2015 by Mike Taylor
+:copyright: (c) 2014-2015 by Mike Taylor
 :license: MIT, see LICENSE for more details.
 
 Micropub Tools
@@ -68,7 +67,7 @@ def discoverEndpoint(domain, endpoint, content=None, look_in={'name':'link'}, te
                     if url.scheme in ('http', 'https') and rel in endpoint:
                         result[rel].add(url)
  
-        all_links = BeautifulSoup(result['content'], parse_only=SoupStrainer(**look_in)).find_all('link')
+        all_links = BeautifulSoup(result['content'], 'lxml', parse_only=SoupStrainer(**look_in)).find_all('link')
         print domain
         print all_links
         for link in all_links:
