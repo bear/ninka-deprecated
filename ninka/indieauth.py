@@ -68,8 +68,15 @@ def discoverAuthEndpoints(authDomain, content=None, look_in={'name':'link'}, tes
 
             for link in all_links:
                 if ';' in link:
-                    href, rel = link.split(';')
-                    url = urlparse(href.strip()[1:-1])
+                    link_parts = link.split(';')
+                    for s in link_parts[1:]:
+                        if 'rel=' in s:
+                            href = link_parts[0].strip()
+                            rel  = s.strip().replace('rel=', '').replace('"', '')
+                            break
+                    url = urlparse(href[1:-1])
+
+                    print href, rel
 
                     if url.scheme in ('http', 'https') and rel in ('authorization_endpoint', 'redirect_uri'):
                         result[rel].add(url)
