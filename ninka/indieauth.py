@@ -11,7 +11,7 @@ import sys
 
 import requests
 import re
-from urlparse import urlparse, urljoin, parse_qs
+from urlparse import urlparse, urljoin, parse_qs, ParseResult
 from bs4 import BeautifulSoup, SoupStrainer
 
 import ronkyuu
@@ -112,7 +112,7 @@ def validateAuthCode(code, redirect_uri, client_id, state=None, validationEndpoi
         payload['state'] = state
 
     authURL = None
-    authEndpoints = ninka.indieauth.discoverAuthEndpoints(client_id)
+    authEndpoints = discoverAuthEndpoints(client_id)
     for url in authEndpoints['authorization_endpoint']:
         authURL = url
         break
