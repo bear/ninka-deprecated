@@ -101,13 +101,13 @@ def validateAuthCode(code, redirect_uri, client_id, state=None, validationEndpoi
     :param redirect_uri: redirect_uri for the given auth code
     :param client_id: where to find the auth endpoint for the given auth code
     :param state: state for the given auth code
-    :param tokenEndpoint: URL to make the validation request at
+    :param validationEndpoint: URL to make the validation request at
     :rtype: True if auth code is valid
     """
     payload = {'code':         code,
                'redirect_uri': redirect_uri,
                'client_id':    client_id,
-               }
+              }
     if state is not None:
         payload['state'] = state
 
@@ -119,7 +119,7 @@ def validateAuthCode(code, redirect_uri, client_id, state=None, validationEndpoi
     if authURL is not None:
         validationEndpoint = ParseResult(authURL.scheme, authURL.netloc, authURL.path, '', '', '').geturl()
 
-    r = requests.post(validationEndpoint, verify=True, params=payload)
+    r = requests.post(validationEndpoint, verify=True, data=payload)
     result = { 'status':  r.status_code,
                'headers': r.headers
              }
@@ -131,4 +131,3 @@ def validateAuthCode(code, redirect_uri, client_id, state=None, validationEndpoi
         result['response'] = parse_qs(result['content'])
 
     return result
-
