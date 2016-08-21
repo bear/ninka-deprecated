@@ -7,10 +7,15 @@ IndieAuth Toolkit
 """
 
 import requests
-from urlparse import urlparse, parse_qs, ParseResult
 from bs4 import BeautifulSoup, SoupStrainer
 
+try:  # Python v3
+    from urllib.parse import urlparse, parse_qs, ParseResult
+except ImportError:
+    from urlparse import urlparse, parse_qs, ParseResult
+
 import ronkyuu
+
 
 _html_parser = 'lxml'   # 'html.parser', 'lxml', 'lxml-xml', 'html5lib'
 
@@ -78,8 +83,6 @@ def discoverAuthEndpoints(authDomain, content=None, look_in={'name': 'link'}, te
                             rel  = s.strip().replace('rel=', '').replace('"', '')
                             break
                     url = urlparse(href[1:-1])
-
-                    print href, rel
 
                     if url.scheme in ('http', 'https') and rel in ('authorization_endpoint', 'redirect_uri'):
                         result[rel].add(url)

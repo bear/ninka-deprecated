@@ -3,8 +3,8 @@
 :copyright: (c) 2014-2016 by Mike Taylor
 :license: MIT, see LICENSE for more details.
 """
-from indieauth import discoverAuthEndpoints, validateAuthCode              # noqa
-from micropub import discoverMicropubEndpoints, discoverTokenEndpoints     # noqa
+from .indieauth import discoverAuthEndpoints, validateAuthCode              # noqa
+from .micropub import discoverMicropubEndpoints, discoverTokenEndpoints     # noqa
 
 __author__       = 'bear (Mike Taylor)'
 __email__        = 'bear@bear.im'

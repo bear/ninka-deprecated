@@ -18,9 +18,9 @@ dev: env
 	pyenv local 2.7.11 3.5.2
 
 info:
-	python --version
-	pyenv --version
-	pip --version
+	@python --version
+	@pyenv --version
+	@pip --version
 
 clean:
 	rm -rf build

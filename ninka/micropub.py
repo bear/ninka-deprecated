@@ -7,10 +7,15 @@ Micropub Tools
 """
 
 import requests
-from urlparse import urlparse, urljoin
 from bs4 import BeautifulSoup, SoupStrainer
 
+try:  # Python v3
+    from urllib.parse import urlparse, urljoin
+except ImportError:
+    from urlparse import urlparse, urljoin
+
 import ronkyuu
+
 
 _html_parser = 'lxml'   # 'html.parser', 'lxml', 'lxml-xml', 'html5lib'
 
@@ -71,8 +76,6 @@ def discoverEndpoint(domain, endpoint, content=None, look_in={'name': 'link'}, t
                         result[rel].add(url)
 
         all_links = BeautifulSoup(result['content'], _html_parser, parse_only=SoupStrainer(**look_in)).find_all('link')
-        print domain
-        print all_links
         for link in all_links:
             rel = link.get('rel', None)[0]
             if rel in endpoint:
