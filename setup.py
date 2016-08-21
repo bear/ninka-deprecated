@@ -17,7 +17,7 @@ metadata = read(os.path.join(cwd, 'ninka', '__init__.py'))
 
 def extract_metaitem(meta):
     # swiped from https://hynek.me 's attr package
-    meta_match = re.search(r"""^__{meta}__\s+=\s+['\"]([^'\"]*)['\"]""".format(meta=meta), 
+    meta_match = re.search(r"""^__{meta}__\s+=\s+['\"]([^'\"]*)['\"]""".format(meta=meta),
                            metadata, re.MULTILINE)
     if meta_match:
         return meta_match.group(1)
@@ -37,10 +37,18 @@ if __name__ == '__main__':
         download_url=extract_metaitem('download_url'),
         packages=find_packages(exclude=('tests', 'docs')),
         platforms=['Any'],
+        install_requires=[
+            'requests',
+            'ronkyuu',
+            'beautifulsoup4',
+            'lxml',
+        ],
+        setup_requires=['pytest-runner'],
+        tests_require=['pytest'],
         classifiers=[
-          'Development Status :: 4 - Beta',
-          'Intended Audience :: Developers',
-          'License :: OSI Approved :: MIT License',
-          'Topic :: Software Development :: Libraries :: Python Modules',
+            'Development Status :: 4 - Beta',
+            'Intended Audience :: Developers',
+            'License :: OSI Approved :: MIT License',
+            'Topic :: Software Development :: Libraries :: Python Modules',
         ]
   )

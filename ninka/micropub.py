@@ -1,33 +1,36 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: (c) 2014-2015 by Mike Taylor
+:copyright: (c) 2014-2016 by Mike Taylor
 :license: MIT, see LICENSE for more details.
 
 Micropub Tools
 """
 
-import os
-import sys
-
 import requests
-import re
-from urlparse import urlparse, urljoin, parse_qs
+from urlparse import urlparse, urljoin
 from bs4 import BeautifulSoup, SoupStrainer
 
 import ronkyuu
+
+_html_parser = 'lxml'   # 'html.parser', 'lxml', 'lxml-xml', 'html5lib'
+
+def setParser(htmlParser='html5lib'):
+    global _html_parser
+    _html_parser = htmlParser
+
 
 # find an endpoint
 # look in headers for given domain for a HTTP Link header
 # if not found, look for an HTML <link> element in page returned from domain given
 
-def discoverEndpoint(domain, endpoint, content=None, look_in={'name':'link'}, test_urls=True, validateCerts=True):
+def discoverEndpoint(domain, endpoint, content=None, look_in={'name': 'link'}, test_urls=True, validateCerts=True):
     """Find the given endpoint for the given domain.
     Only scan html element matching all criteria in look_in.
 
     optionally the content to be scanned can be given as an argument.
 
     :param domain: the URL of the domain to handle
-    :param endpoint: list of endpoints to look for  
+    :param endpoint: list of endpoints to look for
     :param content: the content to be scanned for the endpoint
     :param look_in: dictionary with name, id and class_. only element matching all of these will be scanned
     :param test_urls: optional flag to test URLs for validation
@@ -47,7 +50,7 @@ def discoverEndpoint(domain, endpoint, content=None, look_in={'name':'link'}, te
         result = {'status':   r.status_code,
                   'headers':  r.headers
                   }
-        ## check for character encodings and use 'correct' data
+        # check for character encodings and use 'correct' data
         if 'charset' in r.headers.get('content-type', ''):
             result['content'] = r.text
         else:
@@ -66,8 +69,8 @@ def discoverEndpoint(domain, endpoint, content=None, look_in={'name':'link'}, te
                     url = urlparse(href.strip()[1:-1])
                     if url.scheme in ('http', 'https') and rel in endpoint:
                         result[rel].add(url)
- 
-        all_links = BeautifulSoup(result['content'], 'lxml', parse_only=SoupStrainer(**look_in)).find_all('link')
+
+        all_links = BeautifulSoup(result['content'], _html_parser, parse_only=SoupStrainer(**look_in)).find_all('link')
         print domain
         print all_links
         for link in all_links:
@@ -82,12 +85,12 @@ def discoverEndpoint(domain, endpoint, content=None, look_in={'name':'link'}, te
                         result[rel].add(url)
     return result
 
-def discoverMicropubEndpoints(domain, content=None, look_in={'name':'link'}, test_urls=True, validateCerts=True):
+def discoverMicropubEndpoints(domain, content=None, look_in={'name': 'link'}, test_urls=True, validateCerts=True):
     """Find the micropub for the given domain.
     Only scan html element matching all criteria in look_in.
 
     optionally the content to be scanned can be given as an argument.
-       
+
     :param domain: the URL of the domain to handle
     :param content: the content to be scanned for the endpoint
     :param look_in: dictionary with name, id and class_. only element matching all of these will be scanned
@@ -97,12 +100,12 @@ def discoverMicropubEndpoints(domain, content=None, look_in={'name':'link'}, tes
     """
     return discoverEndpoint(domain, ('micropub',), content, look_in, test_urls, validateCerts)
 
-def discoverTokenEndpoints(domain, content=None, look_in={'name':'link'}, test_urls=True, validateCerts=True):
+def discoverTokenEndpoints(domain, content=None, look_in={'name': 'link'}, test_urls=True, validateCerts=True):
     """Find the token for the given domain.
     Only scan html element matching all criteria in look_in.
 
     optionally the content to be scanned can be given as an argument.
-       
+
     :param domain: the URL of the domain to handle
     :param content: the content to be scanned for the endpoint
     :param look_in: dictionary with name, id and class_. only element matching all of these will be scanned
