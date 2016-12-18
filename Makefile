@@ -3,7 +3,7 @@ help:
 	@echo "  env         install all production dependencies"
 	@echo "  dev         install all dev and production dependencies (virtualenv is assumed)"
 	@echo "  clean       remove unwanted stuff"
-	@echo "  lint        check style with flake8"
+	@echo "  lint        check style with pycodestyle"
 	@echo "  test        run tests"
 	@echo "  coverage    run codecov"
 
