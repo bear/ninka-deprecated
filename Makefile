@@ -38,7 +38,10 @@ lint: info
 test: lint
 	python setup.py test
 
-tox:
+tox.ini: requirements.txt requirements-test.txt
+	tox --recreate
+
+tox: tox.ini
 	tox
 
 coverage: clean
