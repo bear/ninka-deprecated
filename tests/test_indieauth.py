@@ -7,7 +7,7 @@ from ninka import discoverAuthEndpoints
 
 class TestDiscovery(unittest.TestCase):
     def runTest(self):
-        for url in ('https://bear.im', 'http://aaronparecki.com/'):
+        for url in ('https://bear.im', ):
             r = discoverAuthEndpoints(url)
             assert 'authorization_endpoint' in r
 
