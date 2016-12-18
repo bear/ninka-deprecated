@@ -27,9 +27,11 @@ pip-log.txt
 
 # Unit test / coverage reports
 .coverage
+.codecov-token
 .tox
 nosetests.xml
-violations.flake8.txt
+htmlcov
+coverage.xml
 
 # Translations
 *.mo
@@ -39,4 +41,4 @@ violations.flake8.txt
 .project
 .pydevproject
 
-.python-version
+violations.flake8.txt
