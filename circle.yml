@@ -6,7 +6,7 @@ containerInfo:
 
 stages:
   build:
-    workDir: ~/kaku
+    workDir: ~/ninka
     steps:
       - type: checkout
       - type: shell
